@@ -23,17 +23,18 @@ For the first time use, the Smart Contract Owner should `initialize` the Smart C
 - `initProject`
  
 Recall `initialize` function for update the Threshold values after change the constants properly
-- `initProject` \
+- `initProject` 
 
 Maintain the Reward token($WWV) vault's balance
 - `REWARD_TOKEN_MINT` is the reward token mint (for test).
 - `rewardVault` is the reward token account for owner. The owner should have the token's `Mint Authority` or should `Fund` regularly.
 
 This is current test value. Should be revised properly.
-- `EPOCH` = 60                                    // A day \
-- `REWARD_PER_DAY` = 100_000_000                  // 0.1 $WWV \
+- `EPOCH` = 60                                    // A day 
+- `REWARD_PER_DAY` = 100_000_000                  // 0.1 $WWV 
 According to the rank of NFTs, there reward amount will be changed automatically following the below logic.
-RANK          DAILY PRIZE
+
+RANK          DAILY PRIZE/
 1500-2000     1$WWV
 1000-1499     1.5$WWV
 600-999       2$WWV
