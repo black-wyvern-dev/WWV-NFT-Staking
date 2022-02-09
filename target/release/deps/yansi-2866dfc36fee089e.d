@@ -1,0 +1,13 @@
+/home/fury/Rust/apollo/goblin-army-solana-nft-staking-react/backend/staking_program/target/release/deps/yansi-2866dfc36fee089e.rmeta: /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/lib.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/docify.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/macros.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/windows.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/paint.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/style.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/color.rs
+
+/home/fury/Rust/apollo/goblin-army-solana-nft-staking-react/backend/staking_program/target/release/deps/libyansi-2866dfc36fee089e.rlib: /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/lib.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/docify.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/macros.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/windows.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/paint.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/style.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/color.rs
+
+/home/fury/Rust/apollo/goblin-army-solana-nft-staking-react/backend/staking_program/target/release/deps/yansi-2866dfc36fee089e.d: /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/lib.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/docify.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/macros.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/windows.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/paint.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/style.rs /home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/color.rs
+
+/home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/lib.rs:
+/home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/docify.rs:
+/home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/macros.rs:
+/home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/windows.rs:
+/home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/paint.rs:
+/home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/style.rs:
+/home/fury/.cargo/registry/src/github.com-1ecc6299db9ec823/yansi-0.5.0/src/color.rs:

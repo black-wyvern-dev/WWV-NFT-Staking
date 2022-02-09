@@ -1,0 +1,2 @@
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/home/fury/Rust/apollo/goblin-army-solana-nft-staking-react/backend/staking_program/target/release/build/typenum-ae9dd920c30c8345/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/home/fury/Rust/apollo/goblin-army-solana-nft-staking-react/backend/staking_program/target/release/build/typenum-ae9dd920c30c8345/out/op.rs
