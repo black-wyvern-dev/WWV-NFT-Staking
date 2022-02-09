@@ -34,14 +34,14 @@ This is current test value. Should be revised properly.
 - `REWARD_PER_DAY` = 100_000_000                  // 0.1 $WWV 
 According to the rank of NFTs, there reward amount will be changed automatically following the below logic.
 
-RANK          DAILY PRIZE/
-1500-2000     1$WWV
-1000-1499     1.5$WWV
-600-999       2$WWV
-300-599       2.5$WWV
-200-299       3$WWV
-51-199        4$WWV
-1-50          5$WWV
+- RANK          DAILY PRIZE
+- 1500-2000     1$WWV
+- 1000-1499     1.5$WWV
+- 600-999       2$WWV
+- 300-599       2.5$WWV
+- 200-299       3$WWV
+- 51-199        4$WWV
+- 1-50          5$WWV
 
 
 ### As a NFT Holder
