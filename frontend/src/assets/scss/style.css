@@ -20,9 +20,49 @@ body {
   font-size: 16px;
   background-color: var(--main-bg-color);
 }
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+* {
+  font-family: 'Rye', cursive;
+}
 button {
   cursor: pointer;
 }
 a {
   text-decoration: none;
+}
+.page-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+}
+.stake-box {
+  border-radius: 21px;
+  border: 3px solid rgba(39, 39, 39, 0.6);
+  border-collapse: collapse;
+  background: linear-gradient(237.15deg, rgba(199, 178, 153, 0) -7.38%, rgba(199, 178, 153, 0.2) 97.96%) !important;
+  padding: 3%;
+}
+.staking-buttons {
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 40px;
+}
+.staking-btn {
+  font-size: 24px;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 3px solid rgba(39, 39, 39, 0.6);
+  background: transparent;
+  color: #B22234;
+  font-weight: bolder;
+}
+
+.divider {
+  margin-bottom: 40px !important;
 }
