@@ -62,7 +62,22 @@ a {
   color: #B22234;
   font-weight: bolder;
 }
-
 .divider {
   margin-bottom: 40px !important;
+}
+.list-content {
+  display: flex;
+  flex-wrap: wrap;
+}
+.nft-card {
+  width: calc(25% - 60px);
+  margin: auto;
+  position: relative;
+}
+.nft-card img {
+  object-fit: contain;
+}
+
+.list-title {
+  margin-bottom: 30px;
 }

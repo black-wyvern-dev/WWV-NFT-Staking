@@ -3,10 +3,10 @@ import { ConnectionProvider } from "@solana/wallet-adapter-react";
 import { clusterApiUrl } from "@solana/web3.js";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { ClientWalletProvider as WalletProvider } from './WalletProvider'
-import { PUBLISH_NETWIRK } from '../../config';
+import { PUBLISH_NETWORK } from '../../config';
 
 export const Wallets = ({ children }) => {
-  const netstate = PUBLISH_NETWIRK
+  const netstate = PUBLISH_NETWORK
   let SOLANA_NETWORK;
   if (netstate === "devnet") {
     SOLANA_NETWORK = WalletAdapterNetwork.Devnet;

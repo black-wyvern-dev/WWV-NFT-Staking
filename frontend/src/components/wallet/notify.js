@@ -2,7 +2,7 @@ import { Link, makeStyles } from '@material-ui/core';
 import LaunchIcon from '@material-ui/icons/Launch';
 import { useSnackbar } from 'notistack';
 import React, { useCallback } from 'react';
-import { PUBLISH_NETWIRK } from '../../config';
+import { PUBLISH_NETWORK } from '../../config';
 
 const useStyles = makeStyles({
     notification: {

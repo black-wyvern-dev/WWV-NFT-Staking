@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Button } from '@material-ui/core';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { Keypair, SystemProgram, Transaction } from '@solana/web3.js';
-import { PUBLISH_NETWIRK } from '../../config';
+import { PUBLISH_NETWORK } from '../../config';
 import { useNotify } from './notify';
 
 const SendTransaction = () => {
@@ -39,7 +39,7 @@ const SendTransaction = () => {
 
     return (
         <Button variant="contained" color="secondary" onClick={onClick} disabled={!publicKey}>
-            Send Transaction ({PUBLISH_NETWIRK})
+            Send Transaction ({PUBLISH_NETWORK})
         </Button>
     );
 };

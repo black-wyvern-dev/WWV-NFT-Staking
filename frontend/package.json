@@ -1,7 +1,9 @@
 {
-  "name": "frontend",
+  "name": "wwv-nft-staking",
+  "author": "Alex Dragon",
   "licence": "MIT",
   "version": "0.1.0",
+  "private": false,
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
