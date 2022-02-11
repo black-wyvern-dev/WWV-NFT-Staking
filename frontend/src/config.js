@@ -1,2 +1,7 @@
-export const WWV_CREATOR = "Cauu4ZCTdqqiDJp3JE4s1S37YEmt3A3y2n9FjLtcbMut";
+import { PublicKey } from "@solana/web3.js";
+
+// export const APE_CREATOR = "69JUqMCBEyKBppr4zwGAM9HTQ8JtUwWE2vdQQShWQExH";
+export const WWV_CREATOR = "HeTGvb5CDyAfHfK7sYfb8LCqSGMjjLDH1ZJyhV9qUrzt";
 export const PUBLISH_NETWORK = "devnet";
+
+export const PROGRAM_ID = "F7cBo37zfFK5kLbTZxfejozgSiTb6J3EfgNWiu9HRPzD";

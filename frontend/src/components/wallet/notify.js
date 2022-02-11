@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 export function useNotify() {
     const styles = useStyles();
     const { enqueueSnackbar } = useSnackbar();
-    const netstate = PUBLISH_NETWIRK;
+    const netstate = PUBLISH_NETWORK;
     return useCallback(
         (variant, message, signature) => {
             enqueueSnackbar(
