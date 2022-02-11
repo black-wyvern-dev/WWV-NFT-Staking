@@ -1,7 +1,7 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useState, useEffect, useRef } from "react";
-// import { stakeNft, withdrawNft } from "../contexts/helper";
+import { stakeNft, withdrawNft } from "../contexts/helper";
 import CardLoading from "./CardLoading";
 
 export default function NFTCard({
@@ -19,11 +19,11 @@ export default function NFTCard({
   const [loading, setLoading] = useState(false);
 
   const onStakeNFT = (mint, legendary) => {
-    // stakeNft(wallet.publicKey, new PublicKey(mint), legendary, () => setLoading(true), () => setLoading(false), updatePageStates);
+    stakeNft(wallet.publicKey, new PublicKey(mint), legendary, () => setLoading(true), () => setLoading(false), updatePageStates);
   }
 
   const onUntakeNFT = (mint) => {
-    // withdrawNft(wallet.publicKey, new PublicKey(mint), () => setLoading(true), () => setLoading(false), updatePageStates);
+    withdrawNft(wallet.publicKey, new PublicKey(mint), () => setLoading(true), () => setLoading(false), updatePageStates);
   }
 
   useEffect(() => {

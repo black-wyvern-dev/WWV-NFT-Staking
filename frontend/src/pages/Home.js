@@ -9,7 +9,7 @@ import { getParsedNftAccountsByOwner } from "@nfteyez/sol-rayz";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WWV_CREATOR } from "../config";
 import SkeletonCard from "../components/SkeletonCard";
-// import { getNftMetaData, getUserPoolState } from "../contexts/helper";
+import { getNftMetaData, getUserPoolState } from "../contexts/helper";
 import { PublicKey } from "@solana/web3.js";
 // import { initProject } from "../contexts/helper";
 
@@ -42,42 +42,41 @@ export default function Home() {
                 "name": json.name,
                 "image": json.image,
                 "mint": item.mint,
-                // "legendary": legendaryValidatie(json)
+                "legendary": legendaryValidatie(json)
               })
             })
         }
       }
       setUnstaked(nftDump);
-      console.log(nftDump, '--------------')
       setHide(!hide);
     }
     setUnStakedLoading(false);
   }
 
-  // const getStakedNFTs = async () => {
-  //   setStakedLoading(true);
-  //   const nftDump = [];
-  //   const list = await getUserPoolState(wallet.publicKey);
-  //   if(list !== null) {
-  //     for (let i = 0; i < list.stakedCount.toNumber(); i++) {
-  //       const nft = await getNftMetaData(new PublicKey(list.stakedMints[i].mint))
-  //       await fetch(nft.data.data.uri)
-  //         .then(resp =>
-  //           resp.json()
-  //         ).then((json) => {
-  //           nftDump.push({
-  //             "name": json.name,
-  //             "image": json.image,
-  //             "mint": nft.data.mint,
-  //             "legendary": legendaryValidatie(json)
-  //           })
-  //         })
-  //     }
-  //   }
-  //   setUserStakedNFTs(nftDump);
-  //   setStakedLoading(false);
-  //   setHide(!hide);
-  // }
+  const getStakedNFTs = async () => {
+    setStakedLoading(true);
+    const nftDump = [];
+    const list = await getUserPoolState(wallet.publicKey);
+    if(list !== null) {
+      for (let i = 0; i < list.stakedCount.toNumber(); i++) {
+        const nft = await getNftMetaData(new PublicKey(list.stakedMints[i].mint))
+        await fetch(nft.data.data.uri)
+          .then(resp =>
+            resp.json()
+          ).then((json) => {
+            nftDump.push({
+              "name": json.name,
+              "image": json.image,
+              "mint": nft.data.mint,
+              "legendary": legendaryValidatie(json)
+            })
+          })
+      }
+    }
+    setUserStakedNFTs(nftDump);
+    setStakedLoading(false);
+    setHide(!hide);
+  }
 
   const getMetadataDetail = async () => {
     const nftsList = await getParsedNftAccountsByOwner({ publicAddress: wallet.publicKey, connection: solConnection });
@@ -91,7 +90,7 @@ export default function Home() {
 
   const updatePageStates = () => {
     getUnstakedNFTs();
-    // getStakedNFTs();
+    getStakedNFTs();
   }
 
   useEffect(() => {
