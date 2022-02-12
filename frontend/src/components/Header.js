@@ -13,7 +13,7 @@ export default function Header() {
           <div className="logo">
             <img
               src={logo}
-              alt="shredded ape logo"
+              alt="wild west verse logo"
             />
           </div>
           <WalletModalProvider>

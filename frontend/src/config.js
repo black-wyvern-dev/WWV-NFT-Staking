@@ -10,6 +10,7 @@ export const GLOBAL_AUTHORITY_SEED = "global-authority";
 export const REWARD_TOKEN_MINT = new PublicKey("8EoML7gaBJsgJtepm25wq3GuUCqLYHBoqd3HP1JxtyBx");
 export const PROGRAM_ID = "F7cBo37zfFK5kLbTZxfejozgSiTb6J3EfgNWiu9HRPzD";
 
-export const SHOW_REWARD_FIXED = 4;
+export const EPOCH = 60 * 60 * 24;
+export const SHOW_REWARD_FIXED = 3;
 
 export const API_URL = "https://howrare.is/api/v0.1/collections/wildwestverse";

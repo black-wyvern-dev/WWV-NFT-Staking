@@ -10,7 +10,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { WWV_CREATOR } from "../config";
 import SkeletonCard from "../components/SkeletonCard";
 import { getNftMetaData, getUserPoolState } from "../contexts/helper";
-import { PublicKey } from "@solana/web3.js";
+// import { PublicKey } from "@solana/web3.js";
 // import { initProject } from "../contexts/helper";
 
 
@@ -23,8 +23,8 @@ export default function Home() {
   const [hide, setHide] = useState(false);
 
   // ------------content state-----------
-  const [unstaked, setUnstaked] = useState([]);
   const [userStakedNFTs, setUserStakedNFTs] = useState([]);
+  const [unstaked, setUnstaked] = useState([]);
 
   const getUnstakedNFTs = async () => {
     setUnStakedLoading(true);
@@ -46,9 +46,9 @@ export default function Home() {
             })
         }
       }
-      setUnstaked(nftDump);
-      setHide(!hide);
     }
+    setUnstaked(nftDump);
+    setHide(!hide);
     setUnStakedLoading(false);
   }
 
@@ -57,6 +57,7 @@ export default function Home() {
     const nftDump = [];
     const list = await getUserPoolState(wallet.publicKey);
     if(list !== null) {
+      console.log(list, 'listlistlist')
       for (let i = 0; i < list.itemCount.toNumber(); i++) {
         const nft = await getNftMetaData(list.items[i].nftAddr)
         await fetch(nft.data.data.uri)

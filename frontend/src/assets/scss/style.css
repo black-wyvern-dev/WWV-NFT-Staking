@@ -107,7 +107,15 @@ a {
 }
 footer {
   background-color: var(--third-color);
-  padding: 42px 0;
+  padding-bottom: 50px;
+}
+.footer-banner {
+  background-color: var(--main-bg-color);
+  max-width: 100%;
+}
+.section-divider {
+  background-color: var(--third-color);
+  height: 40px;
 }
 .footer-image {
   margin: auto;
@@ -120,7 +128,7 @@ footer {
 }
 .site-link a {
   color: var(--main-bg-color);
-  font-size: 30px;
+  font-size: 36px;
   font-weight: bold;
 }
 /* .footer-follow {
@@ -128,13 +136,19 @@ footer {
 } */
 .footer-content p {
   font-family: 300;
-  font-size: 20px;
+  font-size: 24px;
   max-width: 1200px;
   color: var(--main-bg-color);
 }
 .footer-body {
   display: flex;
   justify-content: space-between;
+}
+.footer-footer {
+  text-align: center;
+  margin-top: 80px;
+  color: var(--main-bg-color);
+  font-size: 20px;
 }
 .claim-title {
   display: flex;
@@ -145,7 +159,7 @@ footer {
   font-size: 32px;
   font-weight: bold;
   color: var(--second-color);
-  padding: 0;
+  padding: 0 !important;
 }
 .claim-box {
   padding-top: 50px;
@@ -234,4 +248,76 @@ footer {
   align-items: center;
   justify-content: center;
   pointer-events: none;
+}
+
+.wallet-adapter-dropdown-list-item {
+  font-size: 20.5px !important;
+  padding: 10px 20px !important;
+  height: auto !important;
+}
+
+@media (max-width: 1440px) {
+  .home-banner h1 {
+    font-size: 64px;
+    max-width: 800px;
+  }
+  .home-banner p {
+    font-size: 20px;
+    max-width: 800px;
+    padding: 30px 0;
+  }
+  .list-title {
+    font-size: 50px;
+  }
+  .claim-box h2 {
+    font-size: 70px;
+  }
+  .claim-title img {
+    transform: scale(0.7);
+  }
+  .footer-image img {
+    width: 150px;
+  }
+  .footer-content p {
+    font-size: 15px;
+    max-width: 800px;
+  }
+  .home-banner-image img {
+    transform: scale(0.7);
+  }
+}
+
+@media (max-width: 992px) {
+  .home-banner {
+    flex-direction: column;
+  }
+  .process-body {
+    width: 100%;
+  }
+  .nft-card {
+    width: calc(50% - 30px);
+    margin-right: 30px;
+    margin-bottom: 30px;
+  }
+  .card-action p {
+    font-size: 20px;
+  }
+  .card-action .action-button {
+    font-size: 20px;
+    width: 150px;
+  }
+  .wallet-adapter-button {
+    font-size: 21px !important;
+    padding: 30px 40px !important;
+  }
+  .header-content .logo img {
+    width: 120px;
+  }
+  .footer-follow a svg {
+    width: 45px;
+    height: 45px;
+  }
+  .home-banner h1 {
+    font-size: 54px;
+  }
 }

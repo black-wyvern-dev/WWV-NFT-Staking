@@ -10,7 +10,7 @@ export const ClaimButton = styled(Button)(({ theme }) => ({
     padding: "3px 24px",
     width: "100%",
     position: "relative",
-    fontFamily: "Lexend Deca",
+    fontFamily: "Rye",
     borderRadius: 0,
     border: "4px solid #B22234",
     zIndex: 15,

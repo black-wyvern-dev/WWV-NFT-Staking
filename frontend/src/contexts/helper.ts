@@ -23,7 +23,7 @@ import { WalletContextState } from '@solana/wallet-adapter-react';
 import { IDL } from './staking_program';
 import { programs } from '@metaplex/js';
 import { successAlert } from '../components/toastGroup';
-import { USER_POOL_SIZE, GLOBAL_AUTHORITY_SEED, REWARD_TOKEN_MINT, PROGRAM_ID } from '../config';
+import { USER_POOL_SIZE, GLOBAL_AUTHORITY_SEED, REWARD_TOKEN_MINT, PROGRAM_ID, EPOCH } from '../config';
 
 export const solConnection = new web3.Connection(web3.clusterApiUrl("devnet"));
 
@@ -158,7 +158,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
         const tx = new Transaction();
         if (instructions.length > 0) tx.add(instructions[0]);
         tx.add(program.instruction.stakeNftToFixed(
-            bump, rank, {
+            bump, new anchor.BN(rank), {
             accounts: {
                 owner: userAddress,
                 userFixedPool: userPoolKey,
@@ -169,7 +169,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
                 tokenProgram: TOKEN_PROGRAM_ID,
             },
             instructions: [
-                // ...instructions,
+                ...instructions,
             ],
             signers: [],
         }
@@ -189,6 +189,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
         endLoading();
         console.log(error)
     }
+    endLoading()
 }
 
 export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, startLoading: Function, endLoading: Function, updatePageStates: Function) => {
@@ -212,9 +213,7 @@ export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, s
             globalAuthority,
             [mint]
         );
-    
-        // console.log("Dest NFT Account = ", destinationAccounts[0].toBase58());
-    
+
         let userPoolKey = await PublicKey.createWithSeed(
             userAddress,
             "user-pool",
@@ -239,9 +238,9 @@ export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, s
         }
         ));
         const txId = await wallet.sendTransaction(tx, solConnection);
-        await solConnection.confirmTransaction(txId, "processed");
+        await solConnection.confirmTransaction(txId, "singleGossip");
         await new Promise((resolve, reject) => {
-            solConnection.onAccountChange(userPoolKey, (data: AccountInfo<Buffer> | null) => {
+            solConnection.onAccountChange(destinationAccounts[0], (data: AccountInfo<Buffer> | null) => {
                 if (!data) reject();
                 resolve(true);
             });
@@ -437,4 +436,51 @@ export const claimReward = async (wallet: WalletContextState, startLoading: Func
         console.log(error)
     }
     endLoading();
+};
+
+export const calculateAvailableReward = async (userAddress: PublicKey) => {
+    const userPool: UserPool | null = await getUserPoolState(userAddress);
+    if (userPool === null) return 0;
+    const userPoolInfo = {
+        // ...userPool,
+        owner: userPool.owner.toBase58(),
+        stakedMints: userPool.items.slice(0, userPool.itemCount.toNumber()).map((info) => {
+            return {
+                // ...info,
+                nftAddr: info.nftAddr.toBase58(),
+                stakeTime: info.stakeTime.toNumber(),
+                rank: (new anchor.BN(info.rank)).toNumber(),
+            }
+        }),
+        itemCount: userPool.itemCount.toNumber(),
+        remainingRewards: userPool.pendingReward.toNumber(),
+        lastRewardTime: (new Date(1000 * userPool.rewardTime.toNumber())).toLocaleString(),
+    };
+    // console.log(userPoolInfo);
+
+    let now = Math.floor(Date.now() / 1000);
+    let totalReward = 0;
+    // console.log(`Now: ${now} Last_Reward_Time: ${userPool.lastRewardTime.toNumber()}`);
+    for (let i = 0; i < userPoolInfo.itemCount; i++) {
+        let lastRewardTime = userPool.rewardTime.toNumber();
+        if (lastRewardTime < userPoolInfo.stakedMints[i].stakeTime) {
+            lastRewardTime = userPoolInfo.stakedMints[i].stakeTime;
+        }
+        let rwd = 0;
+        const rank = userPoolInfo.stakedMints[i].rank;
+        if (rank > 0 && rank <= 50) { rwd = 50;} 
+        if (rank > 50 && rank < 200) { rwd = 40; } 
+        if (rank >= 200 && rank < 300) { rwd = 30; } 
+        if (rank >= 300 && rank < 600) { rwd = 25; } 
+        if (rank >= 600 && rank < 1000) { rwd = 20; } 
+        if (rank >= 1000 && rank < 1500) { rwd = 15; } 
+        if (rank >= 1500 && rank <= 2000) { rwd = 10; } 
+        
+        let reward = 0;
+        reward = (Math.floor((now - lastRewardTime) / EPOCH)) * rwd * 100000000;
+
+        totalReward += Math.floor(reward);
+    }
+    totalReward += userPoolInfo.remainingRewards;
+    return totalReward / 100000000;
 };

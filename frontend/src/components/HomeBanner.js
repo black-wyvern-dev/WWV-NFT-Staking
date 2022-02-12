@@ -15,11 +15,11 @@ export default function HomeBanner({ forceRender, ...props }) {
 	const [hide, setHide] = useState(false);
 
 	const getReward = async () => {
-		// const reward = await calculateAvailableReward(wallet.publicKey);
-		// setRewardValue(reward);
+		const reward = await calculateAvailableReward(wallet.publicKey);
+		setRewardValue(reward);
 	}
 	const onClaim = () => {
-		// claimReward(wallet.publicKey, () => setLoading(true), () => setLoading(false));
+		claimReward(wallet, () => setLoading(true), () => setLoading(false));
 		setHide(!hide);
 	}
 
@@ -28,15 +28,23 @@ export default function HomeBanner({ forceRender, ...props }) {
 		setTotalGlabalStakedCnt(list.fixedNftCount.toNumber());
 	}
 	const updateBannerStates = () => {
-		setInterval(() => {
+		const intv = setInterval(() => {
 			getGlobalStateNFTs();
 			getReward();
 		}, 5000);
+		return intv;
 	}
 
 	useEffect(() => {
+		let intv = -1;
 		if (wallet.publicKey !== null) {
-			updateBannerStates();
+			intv = updateBannerStates();
+		}
+		return () => {
+			if (intv !== -1) {
+				clearInterval(intv);
+				console.log('clear interval', intv);
+			}
 		}
 		// eslint-disable-next-line
 	}, [wallet.connected, hide])
@@ -50,7 +58,7 @@ export default function HomeBanner({ forceRender, ...props }) {
 				{wallet.publicKey !== null &&
 					<ProcessBar value={totalGlabalStakedCnt} forceRender={hide} />
 				}
-				<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+				<p>WWV Token will be the currency of our universe and the token has different kinds of utilities.</p>
 			</div>
 			<div className="home-banner-image">
 				{wallet.publicKey === null ?
@@ -73,7 +81,7 @@ export default function HomeBanner({ forceRender, ...props }) {
 									Claim $WWV
 								</>
 								:
-								<SyncLoader color="#F3B82F" size={15} />
+								<SyncLoader color="#B22234" size={15} />
 							}
 						</ClaimButton>
 					</div>

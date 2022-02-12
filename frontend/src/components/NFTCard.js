@@ -1,6 +1,5 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
-import { minutesToHours } from "date-fns";
 import { useState, useEffect, useRef } from "react";
 import { API_URL } from "../config";
 import { stakeNft, withdrawNft } from "../contexts/helper";
@@ -43,12 +42,11 @@ export default function NFTCard({
   const onStakeNFT = async (mint) => {
     const rank = await getRank(mint);
     console.log(rank, 'rank')
-    stakeNft(wallet.publicKey, new PublicKey(mint), rank, () => setLoading(true), () => setLoading(false), updatePageStates);
-    console.log('---------------')
+    stakeNft(wallet, new PublicKey(mint), rank, () => setLoading(true), () => setLoading(false), updatePageStates);
   }
 
   const onUntakeNFT = (mint) => {
-    withdrawNft(wallet.publicKey, new PublicKey(mint), () => setLoading(true), () => setLoading(false), updatePageStates);
+    withdrawNft(wallet, new PublicKey(mint), () => setLoading(true), () => setLoading(false), updatePageStates);
   }
 
   useEffect(() => {
