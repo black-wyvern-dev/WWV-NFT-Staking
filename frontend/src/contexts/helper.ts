@@ -1,4 +1,4 @@
-import { Program, web3 } from '@project-serum/anchor';
+import { web3 } from '@project-serum/anchor';
 import * as anchor from '@project-serum/anchor';
 import {
     AccountInfo,
@@ -6,6 +6,7 @@ import {
     PublicKey,
     SystemProgram,
     SYSVAR_RENT_PUBKEY,
+    Transaction,
     // Transaction,
     // TransactionInstruction,
     // sendAndConfirmTransaction
@@ -70,188 +71,23 @@ export const initProject = async (
     return false;
 }
 
-export const initUserPool = async (
-    userAddress: PublicKey,
-) => {
-    let userPoolKey = await PublicKey.createWithSeed(
-        userAddress,
-        "user-pool",
-        program.programId,
-    );
-
-    console.log(USER_POOL_SIZE);
-    let ix = SystemProgram.createAccountWithSeed({
-        fromPubkey: userAddress,
-        basePubkey: userAddress,
-        seed: "user-pool",
-        newAccountPubkey: userPoolKey,
-        lamports: await solConnection.getMinimumBalanceForRentExemption(USER_POOL_SIZE),
-        space: USER_POOL_SIZE,
-        programId: program.programId,
-    });
-
-    const tx = await program.rpc.initializeFixedPool(
-        {
-            accounts: {
-                userFixedPool: userPoolKey,
-                owner: userAddress
-            },
-            instructions: [
-                ix
-            ],
-            signers: []
-        }
-    );
-    await solConnection.confirmTransaction(tx, "confirmed");
-
-    console.log("Your transaction signature", tx);
-    let poolAccount = await program.account.userPool.fetch(userPoolKey);
-    console.log('Owner of initialized pool = ', poolAccount.owner.toBase58());
-}
-
-export const stakeNft = async (userAddress: PublicKey, mint: PublicKey, rank: anchor.BN) => {
-    let userTokenAccount = await getAssociatedTokenAccount(userAddress, mint);
-    console.log("NFT = ", mint.toBase58(), userTokenAccount.toBase58());
-
-    const [globalAuthority, bump] = await PublicKey.findProgramAddress(
-        [Buffer.from(GLOBAL_AUTHORITY_SEED)],
-        program.programId
-    );
-
-    let { instructions, destinationAccounts } = await getATokenAccountsNeedCreate(
-        solConnection,
-        userAddress,
-        globalAuthority,
-        [mint]
-    );
-
-    console.log("Dest NFT Account = ", destinationAccounts[0].toBase58())
-    let userPoolKey = await PublicKey.createWithSeed(
-        userAddress,
-        "user-pool",
-        program.programId,
-    );
-
-    let poolAccount = await solConnection.getAccountInfo(userPoolKey);
-    console.log(poolAccount);
-    if (poolAccount === null || poolAccount.data === null) {
-        await initUserPool(userAddress);
-    }
-
-    const tx = await program.rpc.stakeNftToFixed(
-        bump, rank, {
-        accounts: {
-            owner: userAddress,
-            userFixedPool: userPoolKey,
-            globalAuthority,
-            userTokenAccount,
-            destNftTokenAccount: destinationAccounts[0],
-            nftMint: mint,
-            tokenProgram: TOKEN_PROGRAM_ID,
-        },
-        instructions: [
-            ...instructions,
+const getAssociatedTokenAccount = async (ownerPubkey: PublicKey, mintPk: PublicKey): Promise<PublicKey> => {
+    let associatedTokenAccountPubkey = (await PublicKey.findProgramAddress(
+        [
+            ownerPubkey.toBuffer(),
+            TOKEN_PROGRAM_ID.toBuffer(),
+            mintPk.toBuffer(), // mint address
         ],
-        signers: [],
-    }
-    );
-    await solConnection.confirmTransaction(tx, "singleGossip");
-
+        ASSOCIATED_TOKEN_PROGRAM_ID
+    ))[0];
+    return associatedTokenAccountPubkey;
 }
 
-export const withdrawNft = async (userAddress: PublicKey, mint: PublicKey) => {
-    let userTokenAccount = await getAssociatedTokenAccount(userAddress, mint);
-    console.log("NFT = ", mint.toBase58(), userTokenAccount.toBase58());
-
-    const [globalAuthority, bump] = await PublicKey.findProgramAddress(
-        [Buffer.from(GLOBAL_AUTHORITY_SEED)],
-        program.programId
-    );
-
-    let { instructions, destinationAccounts } = await getATokenAccountsNeedCreate(
-        solConnection,
-        userAddress,
-        globalAuthority,
-        [mint]
-    );
-
-    console.log("Dest NFT Account = ", destinationAccounts[0].toBase58());
-
-    let userPoolKey = await PublicKey.createWithSeed(
-        userAddress,
-        "user-pool",
-        program.programId,
-    );
-
-    const tx = await program.rpc.withdrawNftFromFixed(
-        bump, {
-        accounts: {
-            owner: userAddress,
-            userFixedPool: userPoolKey,
-            globalAuthority,
-            userTokenAccount,
-            destNftTokenAccount: destinationAccounts[0],
-            nftMint: mint,
-            tokenProgram: TOKEN_PROGRAM_ID,
-        },
-        instructions: [
-        ],
-        signers: [],
-    }
-    );
-    await solConnection.confirmTransaction(tx, "singleGossip");
-}
-
-export const claimReward = async (userAddress: PublicKey) => {
-    const [globalAuthority, bump] = await PublicKey.findProgramAddress(
-        [Buffer.from(GLOBAL_AUTHORITY_SEED)],
-        program.programId
-    );
-
-    console.log("globalAuthority =", globalAuthority.toBase58());
-
-    let userPoolKey = await PublicKey.createWithSeed(
-        userAddress,
-        "user-pool",
-        program.programId,
-    );
-
-    let { instructions, destinationAccounts } = await getATokenAccountsNeedCreate(
-        solConnection,
-        userAddress,
-        userAddress,
-        [REWARD_TOKEN_MINT]
-    );
-
-    console.log("Dest NFT Account = ", destinationAccounts[0].toBase58());
-    console.log(await solConnection.getTokenAccountBalance(destinationAccounts[0]));
-
-    const tx = await program.rpc.claimReward(
-        bump, {
-        accounts: {
-            owner: userAddress,
-            userFixedPool: userPoolKey,
-            globalAuthority,
-            rewardVault,
-            userRewardAccount: destinationAccounts[0],
-            tokenProgram: TOKEN_PROGRAM_ID,
-        },
-        instructions: [
-            ...instructions,
-        ],
-        signers: []
-    }
-    );
-
-    console.log("Your transaction signature", tx);
-    await solConnection.confirmTransaction(tx, "singleGossip");
-
-    console.log(await solConnection.getTokenAccountBalance(destinationAccounts[0]));
-}
-
-export const getGlobalState = async (
-): Promise<GlobalPool | null> => {
-    const [globalAuthority, bump] = await PublicKey.findProgramAddress(
+export const getGlobalState = async (): Promise<GlobalPool | null> => {
+    let cloneWindow: any = window;
+    let provider = new anchor.Provider(solConnection, cloneWindow['solana'], anchor.Provider.defaultOptions())
+    const program = new anchor.Program(IDL as anchor.Idl, PROGRAM_ID, provider);
+    const [globalAuthority] = await PublicKey.findProgramAddress(
         [Buffer.from(GLOBAL_AUTHORITY_SEED)],
         program.programId
     );
@@ -267,6 +103,9 @@ export const getUserPoolState = async (
     userAddress: PublicKey
 ): Promise<UserPool | null> => {
     if (!userAddress) return null;
+    let cloneWindow: any = window;
+    let provider = new anchor.Provider(solConnection, cloneWindow['solana'], anchor.Provider.defaultOptions())
+    const program = new anchor.Program(IDL as anchor.Idl, PROGRAM_ID, provider);
 
     let userPoolKey = await PublicKey.createWithSeed(
         userAddress,
@@ -282,16 +121,139 @@ export const getUserPoolState = async (
     }
 }
 
-const getAssociatedTokenAccount = async (ownerPubkey: PublicKey, mintPk: PublicKey): Promise<PublicKey> => {
-    let associatedTokenAccountPubkey = (await PublicKey.findProgramAddress(
-        [
-            ownerPubkey.toBuffer(),
-            TOKEN_PROGRAM_ID.toBuffer(),
-            mintPk.toBuffer(), // mint address
-        ],
-        ASSOCIATED_TOKEN_PROGRAM_ID
-    ))[0];
-    return associatedTokenAccountPubkey;
+export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank: anchor.BN, startLoading: Function, endLoading: Function, updatePageStates: Function) => {
+    startLoading();
+    let userAddress: PublicKey | null = wallet.publicKey;
+    if (!userAddress) return
+    let userTokenAccount = await getAssociatedTokenAccount(userAddress, mint);
+    try {
+        let cloneWindow: any = window;
+        let provider = new anchor.Provider(solConnection, cloneWindow['solana'], anchor.Provider.defaultOptions())
+        const program = new anchor.Program(IDL as anchor.Idl, PROGRAM_ID, provider);
+        const [globalAuthority, bump] = await PublicKey.findProgramAddress(
+            [Buffer.from(GLOBAL_AUTHORITY_SEED)],
+            program.programId
+        );
+        let userPoolKey = await PublicKey.createWithSeed(
+            userAddress,
+            "user-pool",
+            program.programId,
+        );
+    
+        let { instructions, destinationAccounts } = await getATokenAccountsNeedCreate(
+            solConnection,
+            userAddress,
+            globalAuthority,
+            [mint]
+        );
+        
+        let poolAccount = await solConnection.getAccountInfo(userPoolKey);
+        if (poolAccount === null || poolAccount.data === null) {
+            await initUserPool(wallet);
+            successAlert("Creating data account for user has been successful!\nTry staking again");
+            endLoading();
+            updatePageStates();
+            return;
+        }
+        const tx = new Transaction();
+        if (instructions.length > 0) tx.add(instructions[0]);
+        tx.add(program.instruction.stakeNftToFixed(
+            bump, rank, {
+            accounts: {
+                owner: userAddress,
+                userFixedPool: userPoolKey,
+                globalAuthority,
+                userTokenAccount,
+                destNftTokenAccount: destinationAccounts[0],
+                nftMint: mint,
+                tokenProgram: TOKEN_PROGRAM_ID,
+            },
+            instructions: [
+                // ...instructions,
+            ],
+            signers: [],
+        }
+        ));
+        const txId = await wallet.sendTransaction(tx, solConnection);
+        await solConnection.confirmTransaction(txId, "singleGossip");
+        await new Promise((resolve, reject) => {
+            solConnection.onAccountChange(userPoolKey, (data: AccountInfo<Buffer> | null) => {
+                if (!data) reject();
+                resolve(true);
+            });
+        });
+        successAlert("Staking has been successful!");
+        endLoading();
+        updatePageStates();
+    } catch (error) {
+        endLoading();
+        console.log(error)
+    }
+}
+
+export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, startLoading: Function, endLoading: Function, updatePageStates: Function) => {
+    let userAddress: PublicKey | null = wallet.publicKey;
+    if (!userAddress) return;
+    let userTokenAccount = await getAssociatedTokenAccount(userAddress, mint);
+    // console.log("NFT = ", mint.toBase58(), userTokenAccount.toBase58());
+    startLoading();
+    try {
+        let cloneWindow: any = window;
+        let provider = new anchor.Provider(solConnection, cloneWindow['solana'], anchor.Provider.defaultOptions())
+        const program = new anchor.Program(IDL as anchor.Idl, PROGRAM_ID, provider);
+        const [globalAuthority, bump] = await PublicKey.findProgramAddress(
+            [Buffer.from(GLOBAL_AUTHORITY_SEED)],
+            program.programId
+        );
+    
+        let { destinationAccounts } = await getATokenAccountsNeedCreate(
+            solConnection,
+            userAddress,
+            globalAuthority,
+            [mint]
+        );
+    
+        // console.log("Dest NFT Account = ", destinationAccounts[0].toBase58());
+    
+        let userPoolKey = await PublicKey.createWithSeed(
+            userAddress,
+            "user-pool",
+            program.programId,
+        );
+    
+        const tx = new Transaction();
+        tx.add(program.instruction.withdrawNftFromFixed(
+            bump, {
+            accounts: {
+                owner: userAddress,
+                userFixedPool: userPoolKey,
+                globalAuthority,
+                userTokenAccount,
+                destNftTokenAccount: destinationAccounts[0],
+                nftMint: mint,
+                tokenProgram: TOKEN_PROGRAM_ID,
+            },
+            instructions: [
+            ],
+            signers: [],
+        }
+        ));
+        const txId = await wallet.sendTransaction(tx, solConnection);
+        await solConnection.confirmTransaction(txId, "processed");
+        await new Promise((resolve, reject) => {
+            solConnection.onAccountChange(userPoolKey, (data: AccountInfo<Buffer> | null) => {
+                if (!data) reject();
+                resolve(true);
+            });
+        });
+        successAlert("Untaking has been successful!");
+        endLoading();
+        updatePageStates();
+    } catch (error) {
+        endLoading();
+        console.log(error)
+    }
+    endLoading();
 }
 
 export const getATokenAccountsNeedCreate = async (
@@ -314,7 +276,7 @@ export const getATokenAccountsNeedCreate = async (
             instructions.push(createATAIx);
         }
         destinationAccounts.push(destinationPubkey);
-        if (walletAddress != owner) {
+        if (walletAddress !== owner) {
             const userAccount = await getAssociatedTokenAccount(walletAddress, mint);
             response = await connection.getAccountInfo(userAccount);
             if (!response) {
@@ -364,4 +326,115 @@ export const createAssociatedTokenAccountInstruction = (
     });
 }
 
-main();
+export const initUserPool = async (
+    wallet: WalletContextState,
+) => {
+    let userAddress = wallet.publicKey;
+    if (!userAddress) return;
+    let cloneWindow: any = window;
+    let provider = new anchor.Provider(solConnection, cloneWindow['solana'], anchor.Provider.defaultOptions())
+    const program = new anchor.Program(IDL as anchor.Idl, PROGRAM_ID, provider);
+    let userPoolKey = await PublicKey.createWithSeed(
+        userAddress,
+        "user-pool",
+        program.programId,
+    );
+
+    // console.log(USER_POOL_SIZE);
+    let ix = SystemProgram.createAccountWithSeed({
+        fromPubkey: userAddress,
+        basePubkey: userAddress,
+        seed: "user-pool",
+        newAccountPubkey: userPoolKey,
+        lamports: await solConnection.getMinimumBalanceForRentExemption(USER_POOL_SIZE),
+        space: USER_POOL_SIZE,
+        programId: program.programId,
+    });
+
+    let tx = new Transaction();
+    tx.add(ix);
+    tx.add(program.instruction.initializeFixedPool(
+        {
+            accounts: {
+                userFixedPool: userPoolKey,
+                owner: userAddress
+            },
+            instructions: [
+                // ix
+            ],
+            signers: []
+        }
+    ));
+    const txId = await wallet.sendTransaction(tx, solConnection);
+    await solConnection.confirmTransaction(txId, "singleGossip");
+
+    // console.log("Your transaction signature", tx);
+    // let poolAccount = await program.account.userPool.fetch(userPoolKey);
+    // console.log('Owner of initialized pool = ', poolAccount.owner.toBase58());
+}
+
+export const claimReward = async (wallet: WalletContextState, startLoading: Function, endLoading: Function) => {
+    let userAddress = wallet.publicKey as PublicKey;
+    if (!userAddress) return;
+    startLoading();
+    try {
+        let cloneWindow: any = window;
+        let provider = new anchor.Provider(solConnection, cloneWindow['solana'], anchor.Provider.defaultOptions())
+        const program = new anchor.Program(IDL as anchor.Idl, PROGRAM_ID, provider);
+
+        const [globalAuthority, bump] = await PublicKey.findProgramAddress(
+            [Buffer.from(GLOBAL_AUTHORITY_SEED)],
+            program.programId
+        );
+    
+        // console.log("globalAuthority =", globalAuthority.toBase58());
+    
+        let userPoolKey = await PublicKey.createWithSeed(
+            userAddress,
+            "user-pool",
+            program.programId,
+        );
+    
+        let { instructions, destinationAccounts } = await getATokenAccountsNeedCreate(
+            solConnection,
+            userAddress,
+            userAddress,
+            [REWARD_TOKEN_MINT]
+        );
+
+        const rewardVault = await getAssociatedTokenAccount(globalAuthority, REWARD_TOKEN_MINT);
+    
+        // console.log("Dest NFT Account = ", destinationAccounts[0].toBase58());
+        // console.log(await solConnection.getTokenAccountBalance(destinationAccounts[0]));
+    
+        const tx = new Transaction();
+        if (instructions.length > 0) tx.add(instructions[0]);
+        tx.add(program.instruction.claimReward(
+            bump, {
+            accounts: {
+                owner: userAddress,
+                userFixedPool: userPoolKey,
+                globalAuthority,
+                rewardVault,
+                userRewardAccount: destinationAccounts[0],
+                tokenProgram: TOKEN_PROGRAM_ID,
+            },
+            instructions: [
+                // ...instructions,
+            ],
+            signers: []
+        }
+        ));
+    
+        const txId = await wallet.sendTransaction(tx, solConnection);
+        // console.log("Your transaction signature", tx);
+        await solConnection.confirmTransaction(txId, "singleGossip");
+        endLoading();
+        // console.log(await solConnection.getTokenAccountBalance(destinationAccounts[0]));
+        successAlert("Claim succeeded!")
+    } catch (error) {
+        endLoading();
+        console.log(error)
+    }
+    endLoading();
+};

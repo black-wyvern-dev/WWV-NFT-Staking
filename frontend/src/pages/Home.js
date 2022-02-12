@@ -42,7 +42,6 @@ export default function Home() {
                 "name": json.name,
                 "image": json.image,
                 "mint": item.mint,
-                "legendary": legendaryValidatie(json)
               })
             })
         }
@@ -58,8 +57,8 @@ export default function Home() {
     const nftDump = [];
     const list = await getUserPoolState(wallet.publicKey);
     if(list !== null) {
-      for (let i = 0; i < list.stakedCount.toNumber(); i++) {
-        const nft = await getNftMetaData(new PublicKey(list.stakedMints[i].mint))
+      for (let i = 0; i < list.itemCount.toNumber(); i++) {
+        const nft = await getNftMetaData(list.items[i].nftAddr)
         await fetch(nft.data.data.uri)
           .then(resp =>
             resp.json()
@@ -68,7 +67,6 @@ export default function Home() {
               "name": json.name,
               "image": json.image,
               "mint": nft.data.mint,
-              "legendary": legendaryValidatie(json)
             })
           })
       }
@@ -81,11 +79,6 @@ export default function Home() {
   const getMetadataDetail = async () => {
     const nftsList = await getParsedNftAccountsByOwner({ publicAddress: wallet.publicKey, connection: solConnection });
     return nftsList;
-  }
-
-  const legendaryValidatie = (nft) => {
-    const lagendary_trait = nft.attributes.find(({ trait_type }) => trait_type === "Legendary");
-    return !(lagendary_trait.value === "None")
   }
 
   const updatePageStates = () => {
@@ -112,7 +105,7 @@ export default function Home() {
         {wallet.publicKey !== null &&
           <>
             <div className="nft-list">
-              <h2 className="list-title">Staked Apes{!stakedLoading && <span>({userStakedNFTs.length})</span>}</h2>
+              <h2 className="list-title">Staked NFTs{!stakedLoading && <span>({userStakedNFTs.length})</span>}</h2>
               {stakedLoading ?
                 <div className="list-content">
                   <SkeletonCard />
@@ -129,7 +122,6 @@ export default function Home() {
                       image={item.image}
                       name={item.name}
                       mint={item.mint}
-                      legendary={item.legendary}
                       updatePageStates={updatePageStates}
                     />
                   ))}
@@ -137,7 +129,7 @@ export default function Home() {
               }
             </div>
             <div className="nft-list">
-              <h2 className="list-title">Unstaked Apes{!unstakedLoading && <span>({unstaked.length})</span>}</h2>
+              <h2 className="list-title">Unstaked NFTs{!unstakedLoading && <span>({unstaked.length})</span>}</h2>
               {unstakedLoading ?
                 <div className="list-content">
                   <SkeletonCard />
@@ -154,7 +146,6 @@ export default function Home() {
                       image={item.image}
                       name={item.name}
                       mint={item.mint}
-                      legendary={item.legendary}
                       updatePageStates={updatePageStates}
                     />
                   ))}

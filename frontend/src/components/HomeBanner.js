@@ -2,16 +2,54 @@ import ProcessBar from "./ProcessBar";
 import bannerImage from "../assets/img/WWV-TOKEN.png";
 import { ClaimButton } from "./styleHook";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { useEffect, useState } from "react";
+import SyncLoader from "react-spinners/SyncLoader";
+import { calculateAvailableReward, claimReward, getGlobalState } from "../contexts/helper";
+import { SHOW_REWARD_FIXED } from "../config";
 
-export default function HomeBanner({ totalGlabalStakedCnt, ...props }) {
+export default function HomeBanner({ forceRender, ...props }) {
 	const wallet = useWallet();
+	const [loading, setLoading] = useState(false);
+	const [rewardValue, setRewardValue] = useState(0);
+	const [totalGlabalStakedCnt, setTotalGlabalStakedCnt] = useState(0);
+	const [hide, setHide] = useState(false);
+
+	const getReward = async () => {
+		// const reward = await calculateAvailableReward(wallet.publicKey);
+		// setRewardValue(reward);
+	}
+	const onClaim = () => {
+		// claimReward(wallet.publicKey, () => setLoading(true), () => setLoading(false));
+		setHide(!hide);
+	}
+
+	const getGlobalStateNFTs = async () => {
+		const list = await getGlobalState();
+		setTotalGlabalStakedCnt(list.fixedNftCount.toNumber());
+	}
+	const updateBannerStates = () => {
+		setInterval(() => {
+			getGlobalStateNFTs();
+			getReward();
+		}, 5000);
+	}
+
+	useEffect(() => {
+		if (wallet.publicKey !== null) {
+			updateBannerStates();
+		}
+		// eslint-disable-next-line
+	}, [wallet.connected, hide])
+
 	return (
 		<div className="home-banner">
 			<div className="home-banner-content">
 				<h1>Earn <span>$WWV</span> By Staking Your Wild West Verse </h1>
 				<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever 
 					since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-				<ProcessBar value={totalGlabalStakedCnt} />
+				{wallet.publicKey !== null &&
+					<ProcessBar value={totalGlabalStakedCnt} forceRender={hide} />
+				}
 				<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
 			</div>
 			<div className="home-banner-image">
@@ -25,12 +63,18 @@ export default function HomeBanner({ totalGlabalStakedCnt, ...props }) {
 						<div className="claim-title">
 							<div className="claim-title-content">
 								<p>$WWV</p>
-								<h2>00.00</h2>
+								<h2>{rewardValue.toFixed(SHOW_REWARD_FIXED)}</h2>
 							</div>
 						</div>
 						<p>Accumulated Rewards Amount</p>
-						<ClaimButton>
-							Claim $WWV
+						<ClaimButton disabled={loading} onClick={() => onClaim()}>
+							{!loading ?
+								<>
+									Claim $WWV
+								</>
+								:
+								<SyncLoader color="#F3B82F" size={15} />
+							}
 						</ClaimButton>
 					</div>
 				}

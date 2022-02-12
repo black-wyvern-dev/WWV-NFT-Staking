@@ -1,6 +1,8 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
+import { minutesToHours } from "date-fns";
 import { useState, useEffect, useRef } from "react";
+import { API_URL } from "../config";
 import { stakeNft, withdrawNft } from "../contexts/helper";
 import CardLoading from "./CardLoading";
 
@@ -9,7 +11,6 @@ export default function NFTCard({
   name,
   isStaked,
   mint,
-  legendary,
   updatePageStates,
   ...props
 }) {
@@ -18,8 +19,32 @@ export default function NFTCard({
   const wallet = useWallet();
   const [loading, setLoading] = useState(false);
 
-  const onStakeNFT = (mint, legendary) => {
-    stakeNft(wallet.publicKey, new PublicKey(mint), legendary, () => setLoading(true), () => setLoading(false), updatePageStates);
+  const getRank = (mint) => {
+    const number = name.slice(12);
+    return new Promise((resolve, reject) => {
+      fetch(API_URL)
+      .then(resp =>resp.json())
+      .then((json) => {
+        const nfts = json.result.data.items;
+        const results = nfts.filter(item => {
+          if (item.id === number) return true
+        }
+          // item.mint.indexOf(mint) !== -1
+        )
+        const rank = results[0].rank
+        resolve(rank);
+      })
+      .catch(error => {
+        console.log(error)
+      });
+    });
+  }
+
+  const onStakeNFT = async (mint) => {
+    const rank = await getRank(mint);
+    console.log(rank, 'rank')
+    stakeNft(wallet.publicKey, new PublicKey(mint), rank, () => setLoading(true), () => setLoading(false), updatePageStates);
+    console.log('---------------')
   }
 
   const onUntakeNFT = (mint) => {
@@ -50,7 +75,7 @@ export default function NFTCard({
                   unstake
                 </button>
                 :
-                <button className="action-button" onClick={() => onStakeNFT(mint, legendary)}>
+                <button className="action-button" onClick={() => onStakeNFT(mint)}>
                   stake
                 </button>
               }
