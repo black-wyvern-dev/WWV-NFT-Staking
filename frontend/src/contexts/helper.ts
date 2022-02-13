@@ -482,5 +482,5 @@ export const calculateAvailableReward = async (userAddress: PublicKey) => {
         totalReward += Math.floor(reward);
     }
     totalReward += userPoolInfo.remainingRewards;
-    return totalReward / 100000000;
+    return totalReward / 1000000000;
 };

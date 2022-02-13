@@ -52,13 +52,26 @@ export default function HomeBanner({ forceRender, ...props }) {
 	return (
 		<div className="home-banner">
 			<div className="home-banner-content">
-				<h1>Earn <span>$WWV</span> By Staking Your Wild West Verse </h1>
-				<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever 
-					since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+				<h1>NFT Staking</h1>
+				<h3>What is staking?</h3>
+				<p>Staking is a way to put your asset to work and earn rewards on it.</p>
+				<h3>How does staking work?</h3>
+				<p>You send your NFT to WWV staking smart contract from the web site <a href="www.wildwestverse.com">www.wildwestverse.com</a>. You earn <span>$WWV</span> while your NFT is staked here.</p>
+				<h3>Why should I stake?</h3>
+				<p>You can earn passive income by staking your NFT.</p>
+				<h3>What should I do with my staking rewards?</h3>
+				<p>You can join lottery, sell on the market, stake your <span>$WWV</span> Token and buy items on WWV Auctions. Also <span>$WWV</span> will be able to use on the WWV P2E Strategic Card Game for in game purchases.</p>
+				<h3>When can I collect my staking rewards?</h3>
+				<p>Whenever you want. Remember, you will receive as many staking rewards as the day you stake.</p>
+				<h3>What is rarity based staking?</h3>
+				<p>If your NFT is rarer you will get more staking reward. You can check the rarity scheme from the list above. Also rankings are arranged by 
+					<a href="https://howrare.is/wildwestverse">https://howrare.is/wildwestverse</a></p>
+				<h3>When should I withdraw my NFT?</h3>
+				<p>Whenever you want. But keep in mind that you won't be able to get any more staking income.</p>
 				{wallet.publicKey !== null &&
 					<ProcessBar value={totalGlabalStakedCnt} forceRender={hide} />
 				}
-				<p>WWV Token will be the currency of our universe and the token has different kinds of utilities.</p>
+				{/* <p>And wait for the WWV P2E Strategic Card Game! <span>$WWV</span> Token will able to use in game purchases.</p> */}
 			</div>
 			<div className="home-banner-image">
 				{wallet.publicKey === null ?

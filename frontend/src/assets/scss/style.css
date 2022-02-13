@@ -56,7 +56,6 @@ a {
   padding-top: 80px;
   display: flex;
   justify-content: space-between;
-  padding-bottom: 80px;
 }
 .home-banner h1 {
   font-size: 70px;
@@ -64,18 +63,27 @@ a {
   max-width: 900px;
   font-weight: bold;
 }
-.home-banner h1 span {
+.home-banner h3 {
+  font-size: 30px;
+  color: var(--third-color);
+  font-weight: bold;
+  margin-top: 30px;
+}
+.home-banner h1 span, .home-banner p span {
   color: var(--second-color);
 }
 .home-banner-image {
   padding-top: 40px;
+}
+.home-banner-content a {
+  color: var(--second-color);
 }
 .home-banner p {
   font-size: 25px;
   color: var(--third-color);
   max-width: 900px;
   font-weight: medium;
-  padding: 40px 0;
+  padding-top: 10px;
 }
 
 .process-bar h5 {
@@ -83,7 +91,7 @@ a {
   color: var(--third-color);
   max-width: 900px;
   font-weight: bold;
-  padding: 22px 0;
+  padding: 40px 0 20px 0;
 }
 .process-body {
   height: 37px;
@@ -162,7 +170,7 @@ footer {
   padding: 0 !important;
 }
 .claim-box {
-  padding-top: 50px;
+  padding-top: 30px;
 }
 .claim-box h2 {
   font-size: 80px;
@@ -263,8 +271,7 @@ footer {
   }
   .home-banner p {
     font-size: 20px;
-    max-width: 800px;
-    padding: 30px 0;
+    padding-top: 20px;
   }
   .list-title {
     font-size: 50px;
@@ -283,13 +290,27 @@ footer {
     max-width: 800px;
   }
   .home-banner-image img {
-    transform: scale(0.7);
+    width: 300px;
+    margin: auto;
+    display: flex;
   }
 }
 
 @media (max-width: 992px) {
   .home-banner {
     flex-direction: column;
+  }
+  .footer-body {
+    flex-direction: column;
+  }
+  .footer-follow {
+    text-align: center;
+  }
+  .footer-image {
+    padding-top: 80px;
+  }
+  .footer-image img {
+    width: 250px;
   }
   .process-body {
     width: 100%;
@@ -307,11 +328,11 @@ footer {
     width: 150px;
   }
   .wallet-adapter-button {
-    font-size: 21px !important;
-    padding: 30px 40px !important;
+    font-size: 16px !important;
+    padding: 20px 30px !important;
   }
   .header-content .logo img {
-    width: 120px;
+    width: 250px;
   }
   .footer-follow a svg {
     width: 45px;
@@ -319,5 +340,20 @@ footer {
   }
   .home-banner h1 {
     font-size: 54px;
+  }
+  .footer-footer p {
+    font-size: 16px;
+  }
+  .site-link {
+    text-align: center;
+  }
+  .site-link a {
+    font-size: 24px;
+  }
+}
+@media (max-width: 556px) {
+  .header-content .logo {
+    width: 40px;
+    overflow: hidden;
   }
 }
