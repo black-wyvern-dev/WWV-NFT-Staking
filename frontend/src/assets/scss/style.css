@@ -263,6 +263,12 @@ footer {
   padding: 10px 20px !important;
   height: auto !important;
 }
+.rewardImage {
+  margin-top: 50px;
+}
+.rewardImage1 {
+  margin-top: 50px;
+}
 
 @media (max-width: 1440px) {
   .home-banner h1 {
@@ -290,15 +296,17 @@ footer {
     max-width: 800px;
   }
   .home-banner-image img {
-    width: 300px;
-    margin: auto;
     display: flex;
+    margin: auto;
   }
 }
 
 @media (max-width: 992px) {
   .home-banner {
     flex-direction: column;
+  }
+  .rewardImage1 {
+    display: none;
   }
   .footer-body {
     flex-direction: column;
@@ -355,5 +363,10 @@ footer {
   .header-content .logo {
     width: 40px;
     overflow: hidden;
+  }
+  .home-banner-image img {
+    width: 300px;
+    margin: auto;
+    display: flex;
   }
 }

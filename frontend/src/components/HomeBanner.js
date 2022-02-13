@@ -1,5 +1,6 @@
 import ProcessBar from "./ProcessBar";
 import bannerImage from "../assets/img/WWV-TOKEN.png";
+import rewardImage from '../assets/img/StakinngRewards.png';
 import { ClaimButton } from "./styleHook";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useEffect, useState } from "react";
@@ -64,8 +65,8 @@ export default function HomeBanner({ forceRender, ...props }) {
 				<h3>When can I collect my staking rewards?</h3>
 				<p>Whenever you want. Remember, you will receive as many staking rewards as the day you stake.</p>
 				<h3>What is rarity based staking?</h3>
-				<p>If your NFT is rarer you will get more staking reward. You can check the rarity scheme from the list above. Also rankings are arranged by 
-					<a href="https://howrare.is/wildwestverse">https://howrare.is/wildwestverse</a></p>
+				<p>If your NFT is rarer you will get more staking reward. You can check the rarity scheme from the list above. Also rankings are arranged 
+					by <a href="https://howrare.is/wildwestverse">https://howrare.is/wildwestverse</a></p>
 				<h3>When should I withdraw my NFT?</h3>
 				<p>Whenever you want. But keep in mind that you won't be able to get any more staking income.</p>
 				{wallet.publicKey !== null &&
@@ -75,10 +76,20 @@ export default function HomeBanner({ forceRender, ...props }) {
 			</div>
 			<div className="home-banner-image">
 				{wallet.publicKey === null ?
-					<img
-						src={bannerImage}
-						alt=""
-					/>
+					<>
+						<div>
+							<img
+								src={bannerImage}
+								alt=""
+							/>
+						</div>
+						<div className="rewardImage">
+							<img 
+								src={rewardImage}
+								alt=""
+							/>
+						</div>
+					</>
 					:
 					<div className="claim-box">
 						<div className="claim-title">
@@ -97,6 +108,12 @@ export default function HomeBanner({ forceRender, ...props }) {
 								<SyncLoader color="#B22234" size={15} />
 							}
 						</ClaimButton>
+						<div className="rewardImage1">
+							<img 
+								src={rewardImage}
+								alt=""
+							/>
+						</div>
 					</div>
 				}
 
