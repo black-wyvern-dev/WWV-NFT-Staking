@@ -11,10 +11,10 @@ export default function Header() {
       <Container>
         <div className="header-content">
           <div className="logo">
-            <img
+            {/* <img
               src={logo}
               alt="wild west verse logo"
-            />
+            /> */}
           </div>
           <WalletModalProvider>
             <WalletMultiButton />

@@ -182,9 +182,9 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
                 resolve(true);
             });
         });
-        successAlert("Staking has been successful!");
         endLoading();
         updatePageStates();
+        successAlert("Staking has been successful!");
     } catch (error) {
         endLoading();
         console.log(error)
@@ -245,9 +245,9 @@ export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, s
                 resolve(true);
             });
         });
-        successAlert("Untaking has been successful!");
         endLoading();
         updatePageStates();
+        successAlert("Untaking has been successful!");
     } catch (error) {
         endLoading();
         console.log(error)
@@ -426,7 +426,7 @@ export const claimReward = async (wallet: WalletContextState, startLoading: Func
         ));
     
         const txId = await wallet.sendTransaction(tx, solConnection);
-        // console.log("Your transaction signature", tx);
+        console.log("Your transaction signature", tx);
         await solConnection.confirmTransaction(txId, "singleGossip");
         endLoading();
         // console.log(await solConnection.getTokenAccountBalance(destinationAccounts[0]));
@@ -466,6 +466,8 @@ export const calculateAvailableReward = async (userAddress: PublicKey) => {
         if (lastRewardTime < userPoolInfo.stakedMints[i].stakeTime) {
             lastRewardTime = userPoolInfo.stakedMints[i].stakeTime;
         }
+        console.log(lastRewardTime);
+        console.log(now);
         let rwd = 0;
         const rank = userPoolInfo.stakedMints[i].rank;
         if (rank > 0 && rank <= 50) { rwd = 50;} 
@@ -478,6 +480,7 @@ export const calculateAvailableReward = async (userAddress: PublicKey) => {
         
         let reward = 0;
         reward = (Math.floor((now - lastRewardTime) / EPOCH)) * rwd * 100000000;
+        console.log(reward, "dddddddddddddddd");
 
         totalReward += Math.floor(reward);
     }

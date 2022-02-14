@@ -107,50 +107,72 @@ export default function Home() {
           <>
             <div className="nft-list">
               <h2 className="list-title">Staked NFTs{!stakedLoading && <span>({userStakedNFTs.length})</span>}</h2>
+              {
+                userStakedNFTs.length === 0 &&
+                <hr />
+              }
               {stakedLoading ?
-                <div className="list-content">
-                  <SkeletonCard />
-                  <SkeletonCard />
-                  <SkeletonCard />
-                  <SkeletonCard />
-                </div>
+                <>
+                  <div className="list-content">
+                    <SkeletonCard />
+                    <SkeletonCard />
+                    <SkeletonCard />
+                    <SkeletonCard />
+                  </div>
+                  <hr />
+                </>
                 :
-                <div className="list-content">
-                  {userStakedNFTs.length !== 0 && userStakedNFTs.map((item, key) => (
-                    <NFTCard
-                      key={key}
-                      isStaked={true}
-                      image={item.image}
-                      name={item.name}
-                      mint={item.mint}
-                      updatePageStates={updatePageStates}
-                    />
-                  ))}
-                </div>
+                <>
+                  <div className="list-content">
+                    {userStakedNFTs.length !== 0 && userStakedNFTs.map((item, key) => (
+                      <NFTCard
+                        key={key}
+                        isStaked={true}
+                        image={item.image}
+                        name={item.name}
+                        mint={item.mint}
+                        updatePageStates={updatePageStates}
+                      />
+                    ))}
+                  </div>
+                  {
+                    userStakedNFTs.length !== 0 &&
+                    <hr />
+                  }
+                </>
               }
             </div>
             <div className="nft-list">
               <h2 className="list-title">Unstaked NFTs{!unstakedLoading && <span>({unstaked.length})</span>}</h2>
               {unstakedLoading ?
-                <div className="list-content">
-                  <SkeletonCard />
-                  <SkeletonCard />
-                  <SkeletonCard />
-                  <SkeletonCard />
-                </div>
+                <>
+                  <div className="list-content">
+                    <SkeletonCard />
+                    <SkeletonCard />
+                    <SkeletonCard />
+                    <SkeletonCard />
+                  </div>
+                  <hr />
+                </>
                 :
-                <div className="list-content">
-                  {unstaked.length !== 0 && unstaked.map((item, key) => (
-                    <NFTCard
-                      key={key}
-                      isStaked={false}
-                      image={item.image}
-                      name={item.name}
-                      mint={item.mint}
-                      updatePageStates={updatePageStates}
-                    />
-                  ))}
-                </div>
+                <>
+                  <div className="list-content">
+                    {unstaked.length !== 0 && unstaked.map((item, key) => (
+                      <NFTCard
+                        key={key}
+                        isStaked={false}
+                        image={item.image}
+                        name={item.name}
+                        mint={item.mint}
+                        updatePageStates={updatePageStates}
+                      />
+                    ))}
+                  </div>
+                  {
+                    unstaked.length !== 0 &&
+                    <hr />
+                  }
+                </>
               }
             </div>
           </>

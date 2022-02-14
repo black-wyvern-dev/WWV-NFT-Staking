@@ -11,13 +11,13 @@ export default function ProcessBar({ value, ...props }) {
   }, [])
   return (
     <div className="process-bar">
-      <h5>{value}/5000 WWV Staked</h5>
+      <h3>{value}/2000 WWV Staked</h3>
       <div className="process-body">
         <div className="process-content" ref={ref}>
           <img
             src={bar}
             alt=""
-            style={{ transform: `translateX(-${(5000 - value) / 5000 * width}px)` }}
+            style={{ transform: `translateX(-${(2000 - value) / 2000 * width}px)` }}
           />
         </div>
       </div>

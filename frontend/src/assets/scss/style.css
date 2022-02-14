@@ -36,14 +36,16 @@ a {
   align-items: center;
 }
 .header-content .logo {
-}
-.header-content .logo img {
   width: 100%;
+  height: 50px;
+  background-image: url('../img/logo.svg');
+  background-repeat: no-repeat;
 }
 .container {
   max-width: 1700px;
   margin-right: auto;
   margin-left: auto;
+  padding-bottom: 100px;
 }
 @media (max-width: 1700px) {
   .container {
@@ -53,7 +55,6 @@ a {
   }
 }
 .home-banner {
-  padding-top: 80px;
   display: flex;
   justify-content: space-between;
 }
@@ -86,12 +87,12 @@ a {
   padding-top: 10px;
 }
 
-.process-bar h5 {
-  font-size: 30px;
+.process-bar h3 {
+  font-size: 40px;
   color: var(--third-color);
   max-width: 900px;
   font-weight: bold;
-  padding: 40px 0 20px 0;
+  padding: 40px 0;
 }
 .process-body {
   height: 37px;
@@ -112,10 +113,10 @@ a {
 .wallet-adapter-button {
   font-size: 20px !important;
   padding: 30px 60px !important;
+  white-space: nowrap !important;
 }
 footer {
   background-color: var(--third-color);
-  padding-bottom: 50px;
 }
 .footer-banner {
   background-color: var(--main-bg-color);
@@ -146,7 +147,7 @@ footer {
   font-family: 300;
   font-size: 24px;
   max-width: 1200px;
-  color: var(--main-bg-color);
+  color: var(--third-color);
 }
 .footer-body {
   display: flex;
@@ -154,7 +155,7 @@ footer {
 }
 .footer-footer {
   text-align: center;
-  margin-top: 80px;
+  margin-top: 20px;
   color: var(--main-bg-color);
   font-size: 20px;
 }
@@ -269,6 +270,11 @@ footer {
 .rewardImage1 {
   margin-top: 50px;
 }
+hr {
+  margin-top: 50px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--main-bg-color);
+}
 
 @media (max-width: 1440px) {
   .home-banner h1 {
@@ -315,7 +321,7 @@ footer {
     text-align: center;
   }
   .footer-image {
-    padding-top: 80px;
+    padding-top: 40px;
   }
   .footer-image img {
     width: 250px;
@@ -339,8 +345,11 @@ footer {
     font-size: 16px !important;
     padding: 20px 30px !important;
   }
-  .header-content .logo img {
-    width: 250px;
+  .header-content .logo {
+    width: 60%;
+    height: 50px;
+    background-image: url('../img/logo.svg');
+    background-repeat: no-repeat;
   }
   .footer-follow a svg {
     width: 45px;
@@ -359,10 +368,21 @@ footer {
     font-size: 24px;
   }
 }
+
+@media (max-width: 768px) {
+  .header-content .logo {
+    background-image: url(../img/logo1.png);
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 50px;
+    position: relative;
+  }
+}
 @media (max-width: 556px) {
   .header-content .logo {
-    width: 40px;
-    overflow: hidden;
+    /* width: 40px;
+    overflow: hidden; */
+    /* background-image: url(../img/logo1.png); */
   }
   .home-banner-image img {
     width: 300px;
