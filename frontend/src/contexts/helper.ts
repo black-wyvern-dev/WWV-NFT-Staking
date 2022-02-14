@@ -25,7 +25,7 @@ import { programs } from '@metaplex/js';
 import { successAlert, errorAlertCenter } from '../components/toastGroup';
 import { USER_POOL_SIZE, GLOBAL_AUTHORITY_SEED, REWARD_TOKEN_MINT, PROGRAM_ID, EPOCH } from '../config';
 
-export const solConnection = new web3.Connection(web3.clusterApiUrl("devnet"));
+export const solConnection = new web3.Connection(web3.clusterApiUrl("mainnet-beta"));
 
 export const getNftMetaData = async (nftMintPk: PublicKey) => {
     let { metadata: { Metadata } } = programs;

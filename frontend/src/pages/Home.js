@@ -15,7 +15,7 @@ import { getNftMetaData, getUserPoolState } from "../contexts/helper";
 
 
 export default function Home() {
-  const solConnection = new web3.Connection(web3.clusterApiUrl("devnet"));
+  const solConnection = new web3.Connection(web3.clusterApiUrl("mainnet-beta"));
   // ------------page state-----------
   const wallet = useWallet();
   const [stakedLoading, setStakedLoading] = useState(false)
@@ -31,9 +31,9 @@ export default function Home() {
     let nftDump = [];
     const unstakedNftList = await getMetadataDetail();
     console.log(unstakedNftList, "==> list")
-    if (unstakedNftList.length !== 0) {
+    if (unstakedNftList !== undefined) {
       for (let item of unstakedNftList) {
-        if (item.data.creators[1]?.address === WWV_CREATOR) {
+        if (item.data.creators[0]?.address === WWV_CREATOR) {
           await fetch(item.data.uri)
             .then(resp =>
               resp.json()

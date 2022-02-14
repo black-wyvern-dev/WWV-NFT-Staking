@@ -194,7 +194,7 @@ export type StakingProgram = {
   ],
   "accounts": [
     {
-      "name": "GlobalPool",
+      "name": "globalPool",
       "type": {
         "kind": "struct",
         "fields": [
@@ -210,7 +210,7 @@ export type StakingProgram = {
       }
     },
     {
-      "name": "UserPool",
+      "name": "userPool",
       "type": {
         "kind": "struct",
         "fields": [
@@ -324,7 +324,7 @@ export type StakingProgram = {
       "msg": "Insufficient Lamports"
     }
   ]
-}
+};
 
 export const IDL: StakingProgram = {
   "version": "0.1.0",
@@ -522,7 +522,7 @@ export const IDL: StakingProgram = {
   ],
   "accounts": [
     {
-      "name": "GlobalPool",
+      "name": "globalPool",
       "type": {
         "kind": "struct",
         "fields": [
@@ -538,7 +538,7 @@ export const IDL: StakingProgram = {
       }
     },
     {
-      "name": "UserPool",
+      "name": "userPool",
       "type": {
         "kind": "struct",
         "fields": [
@@ -652,4 +652,4 @@ export const IDL: StakingProgram = {
       "msg": "Insufficient Lamports"
     }
   ]
-}
+};
