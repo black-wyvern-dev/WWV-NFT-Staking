@@ -80,6 +80,11 @@ export default function HomeBanner({ forceRender, ...props }) {
 					}
 					{/* <p>And wait for the WWV P2E Strategic Card Game! <span>$WWV</span> Token will able to use in game purchases.</p> */}
 				</div>
+				{
+					wallet.publicKey === null ?
+					<div className="vl"></div>
+					: <div className="v2"></div>
+				}
 				<div className="home-banner-image">
 					{wallet.publicKey === null ?
 						<>
