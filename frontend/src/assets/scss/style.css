@@ -50,8 +50,8 @@ a {
 @media (max-width: 1700px) {
   .container {
     max-width: 100%;
-    margin-right: 15px;
-    margin-left: 15px;
+    margin-right: 100px;
+    margin-left: 100px;
   }
 }
 .home-banner {
