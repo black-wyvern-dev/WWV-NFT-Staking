@@ -22,7 +22,7 @@ import { GlobalPool, UserPool } from './types';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { IDL } from './staking_program';
 import { programs } from '@metaplex/js';
-import { successAlert } from '../components/toastGroup';
+import { successAlert, errorAlertCenter } from '../components/toastGroup';
 import { USER_POOL_SIZE, GLOBAL_AUTHORITY_SEED, REWARD_TOKEN_MINT, PROGRAM_ID, EPOCH } from '../config';
 
 export const solConnection = new web3.Connection(web3.clusterApiUrl("devnet"));
@@ -188,6 +188,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
     } catch (error) {
         endLoading();
         console.log(error)
+        errorAlertCenter("Solana Network Error! Please try again!")
     }
     endLoading()
 }
@@ -251,6 +252,7 @@ export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, s
     } catch (error) {
         endLoading();
         console.log(error)
+        errorAlertCenter("Solana Network Error! Please try again!")
     }
     endLoading();
 }
@@ -434,6 +436,7 @@ export const claimReward = async (wallet: WalletContextState, startLoading: Func
     } catch (error) {
         endLoading();
         console.log(error)
+        errorAlertCenter("Solana Network Error! Please try again!")
     }
     endLoading();
 };
