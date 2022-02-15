@@ -1,6 +1,7 @@
 import { PublicKey } from "@solana/web3.js";
 
 export const WWV_CREATOR = "2XJU8mvqzLRhKjStWcYwzF7ELwfQ28cm1wtwAXWJbPmQ";
+// export const WWV_CREATOR = "9YWQjewQxThFn8tHFPJT2WrirafMtkrZtQJupZigeXfJ";
 export const PUBLISH_NETWORK = "mainnet";
 
 export const USER_POOL_SIZE = 2464;     // 8 + 41056

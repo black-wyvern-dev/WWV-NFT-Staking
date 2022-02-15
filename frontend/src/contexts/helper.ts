@@ -26,6 +26,7 @@ import { successAlert, errorAlertCenter } from '../components/toastGroup';
 import { USER_POOL_SIZE, GLOBAL_AUTHORITY_SEED, REWARD_TOKEN_MINT, PROGRAM_ID, EPOCH } from '../config';
 
 export const solConnection = new web3.Connection(web3.clusterApiUrl("mainnet-beta"));
+// export const solConnection = new web3.Connection(web3.clusterApiUrl("devnet"));
 
 export const getNftMetaData = async (nftMintPk: PublicKey) => {
     let { metadata: { Metadata } } = programs;
@@ -139,6 +140,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
             "user-pool",
             program.programId,
         );
+        console.log(userPoolKey, 'userPoolKey---------------->')
     
         let { instructions, destinationAccounts } = await getATokenAccountsNeedCreate(
             solConnection,
@@ -148,13 +150,14 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
         );
         
         let poolAccount = await solConnection.getAccountInfo(userPoolKey);
-        if (poolAccount === null || poolAccount.data === null) {
-            await initUserPool(wallet);
-            successAlert("Creating data account for user has been successful!\nTry staking again");
-            endLoading();
-            updatePageStates();
-            return;
-        }
+        console.log(poolAccount, 'pookAccount====================>')
+        // if (poolAccount === null || poolAccount.data === null) {
+        //     await initUserPool(wallet);
+        //     successAlert("Creating data account for user has been successful!\nTry staking again");
+        //     endLoading();
+        //     updatePageStates();
+        //     return;
+        // }
         const tx = new Transaction();
         if (instructions.length > 0) tx.add(instructions[0]);
         tx.add(program.instruction.stakeNftToFixed(
@@ -175,6 +178,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
         }
         ));
         const txId = await wallet.sendTransaction(tx, solConnection);
+        console.log(txId, 'txId==================================>')
         await solConnection.confirmTransaction(txId, "singleGossip");
         await new Promise((resolve, reject) => {
             solConnection.onAccountChange(destinationAccounts[0], (data: AccountInfo<Buffer> | null) => {
@@ -182,6 +186,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
                 resolve(true);
             });
         });
+        console.log("staked status!+++++++++++++++")
         endLoading();
         updatePageStates();
         successAlert("Staking has been successful!");
@@ -220,6 +225,7 @@ export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, s
             "user-pool",
             program.programId,
         );
+        console.log(userPoolKey, 'WithdrawNFT------')
     
         const tx = new Transaction();
         tx.add(program.instruction.withdrawNftFromFixed(
@@ -239,6 +245,7 @@ export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, s
         }
         ));
         const txId = await wallet.sendTransaction(tx, solConnection);
+        console.log(txId, 'txId----=======>')
         await solConnection.confirmTransaction(txId, "singleGossip");
         await new Promise((resolve, reject) => {
             solConnection.onAccountChange(destinationAccounts[0], (data: AccountInfo<Buffer> | null) => {
@@ -246,6 +253,7 @@ export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, s
                 resolve(true);
             });
         });
+        console.log("unstaked status!+++++++++++++++++++")
         endLoading();
         updatePageStates();
         successAlert("Untaking has been successful!");

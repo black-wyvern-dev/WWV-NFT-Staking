@@ -16,6 +16,7 @@ import { getNftMetaData, getUserPoolState } from "../contexts/helper";
 
 export default function Home() {
   const solConnection = new web3.Connection(web3.clusterApiUrl("mainnet-beta"));
+  // const solConnection = new web3.Connection(web3.clusterApiUrl("devnet"));
   // ------------page state-----------
   const wallet = useWallet();
   const [stakedLoading, setStakedLoading] = useState(false)
