@@ -181,8 +181,13 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
         console.log(txId, 'txId==================================>')
         await solConnection.confirmTransaction(txId, "singleGossip");
         await new Promise((resolve, reject) => {
+            let itv = setTimeout(() => {
+                resolve(true);
+            }, 15000);
+
             solConnection.onAccountChange(destinationAccounts[0], (data: AccountInfo<Buffer> | null) => {
                 if (!data) reject();
+                clearTimeout(itv);
                 resolve(true);
             });
         });
@@ -193,7 +198,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
     } catch (error) {
         endLoading();
         console.log(error)
-        errorAlertCenter("Solana Network Error! Please try again!")
+        // errorAlertCenter("Solana Network Error! Please try again!")
     }
     endLoading()
 }
