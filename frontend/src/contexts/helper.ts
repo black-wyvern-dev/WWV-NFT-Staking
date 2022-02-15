@@ -177,7 +177,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
         const txId = await wallet.sendTransaction(tx, solConnection);
         await solConnection.confirmTransaction(txId, "singleGossip");
         await new Promise((resolve, reject) => {
-            solConnection.onAccountChange(userPoolKey, (data: AccountInfo<Buffer> | null) => {
+            solConnection.onAccountChange(destinationAccounts[0], (data: AccountInfo<Buffer> | null) => {
                 if (!data) reject();
                 resolve(true);
             });
