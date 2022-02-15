@@ -150,7 +150,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
         );
         
         let poolAccount = await solConnection.getAccountInfo(userPoolKey);
-        console.log(poolAccount, 'pookAccount====================>')
+        console.log(poolAccount, 'poolAccount====================>')
         // if (poolAccount === null || poolAccount.data === null) {
         //     await initUserPool(wallet);
         //     successAlert("Creating data account for user has been successful!\nTry staking again");
@@ -482,8 +482,7 @@ export const calculateAvailableReward = async (userAddress: PublicKey) => {
         if (lastRewardTime < userPoolInfo.stakedMints[i].stakeTime) {
             lastRewardTime = userPoolInfo.stakedMints[i].stakeTime;
         }
-        console.log(lastRewardTime);
-        console.log(now);
+
         let rwd = 0;
         const rank = userPoolInfo.stakedMints[i].rank;
         if (rank > 0 && rank <= 50) { rwd = 50;} 
@@ -496,7 +495,6 @@ export const calculateAvailableReward = async (userAddress: PublicKey) => {
         
         let reward = 0;
         reward = (Math.floor((now - lastRewardTime) / EPOCH)) * rwd * 100000000;
-        console.log(reward, "dddddddddddddddd");
 
         totalReward += Math.floor(reward);
     }

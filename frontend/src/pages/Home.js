@@ -49,6 +49,7 @@ export default function Home() {
       }
     }
     setUnstaked(nftDump);
+    console.log(nftDump, "===>unstaked nfts -1");
     setHide(!hide);
     setUnStakedLoading(false);
     console.log(nftDump, "===>unstaked nfts");
@@ -75,6 +76,7 @@ export default function Home() {
       }
     }
     setUserStakedNFTs(nftDump);
+    console.log(nftDump, "===>staked nfts - 1");
     setStakedLoading(false);
     setHide(!hide);
     console.log(nftDump, "===>staked nfts");
