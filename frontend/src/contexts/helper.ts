@@ -183,7 +183,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
         await new Promise((resolve, reject) => {
             let itv = setTimeout(() => {
                 resolve(true);
-            }, 15000);
+            }, 25000);
 
             solConnection.onAccountChange(destinationAccounts[0], (data: AccountInfo<Buffer> | null) => {
                 if (!data) reject();

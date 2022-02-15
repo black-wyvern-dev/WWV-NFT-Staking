@@ -51,6 +51,7 @@ export default function Home() {
     setUnstaked(nftDump);
     setHide(!hide);
     setUnStakedLoading(false);
+    console.log(nftDump, "===>unstaked nfts");
   }
 
   const getStakedNFTs = async () => {
@@ -76,6 +77,7 @@ export default function Home() {
     setUserStakedNFTs(nftDump);
     setStakedLoading(false);
     setHide(!hide);
+    console.log(nftDump, "===>staked nfts");
   }
 
   const getMetadataDetail = async () => {
