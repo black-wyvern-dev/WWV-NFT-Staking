@@ -31,7 +31,6 @@ export default function Home() {
     setUnStakedLoading(true);
     let nftDump = [];
     const unstakedNftList = await getMetadataDetail();
-    console.log(unstakedNftList, "==> list")
     if (unstakedNftList !== undefined) {
       for (let item of unstakedNftList) {
         if (item.data.creators[0]?.address === WWV_CREATOR) {
@@ -76,7 +75,7 @@ export default function Home() {
       }
     }
     setUserStakedNFTs(nftDump);
-    console.log(nftDump, "===>staked nfts - 1");
+    console.log(nftDump, "===>staked nfts --------- 1");
     setStakedLoading(false);
     setHide(!hide);
     console.log(nftDump, "===>staked nfts");
