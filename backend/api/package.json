@@ -1,0 +1,19 @@
+{
+    "main": "src/index.ts",
+    "scripts": {
+        "ts-node": "export ANCHOR_WALLET=wallet.json && ts-node ./src/scripts.ts",
+        "start": "set ANCHOR_WALLET=wallet.json & nodemon --ignore dist/ src/index.ts"
+    },
+    "dependencies": {
+        "@project-serum/anchor": "^0.20.1",
+        "@solana/spl-token": "^0.1.8",
+        "body-parser": "^1.19.1",
+        "cors": "^2.8.5",
+        "express": "^4.17.2",
+        "http": "^0.0.1-security",
+        "nodemon": "^2.0.15"
+    },
+    "devDependencies": {
+        "typescript": "^4.3.5"
+    }
+}
