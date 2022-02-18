@@ -158,6 +158,20 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
         //     updatePageStates();
         //     return;
         // }
+        let accountOfNFT = await getNFTTokenAccount(mint);
+        
+        console.log(userTokenAccount.toBase58(), accountOfNFT.toBase58(), '>>>>>>>>>>>----------<<<<<<<<<<<<<<<<');
+
+        if (userTokenAccount.toBase58() !== accountOfNFT.toBase58()) {
+            let nftOwner = await getOwnerOfNFT(mint);
+            if (nftOwner.toBase58() === userAddress.toBase58()) userTokenAccount = accountOfNFT;
+            else {
+                console.log('Error: Nft is not owned by user');
+                return;
+            }
+        }
+        console.log("WWV NFT = ", mint.toBase58(), userTokenAccount.toBase58());
+
         const tx = new Transaction();
         if (instructions.length > 0) tx.add(instructions[0]);
         tx.add(program.instruction.stakeNftToFixed(
@@ -308,6 +322,48 @@ export const getATokenAccountsNeedCreate = async (
         instructions,
         destinationAccounts,
     };
+}
+
+const getOwnerOfNFT = async (nftMintPk : PublicKey) : Promise<PublicKey> => {
+    let tokenAccountPK = await getNFTTokenAccount(nftMintPk);
+    let tokenAccountInfo = await solConnection.getAccountInfo(tokenAccountPK);
+    
+    console.log("nftMintPk=", nftMintPk.toBase58());
+    console.log("tokenAccountInfo =", tokenAccountInfo);
+  
+    if (tokenAccountInfo && tokenAccountInfo.data ) {
+      let ownerPubkey = new PublicKey(tokenAccountInfo.data.slice(32, 64))
+      console.log("ownerPubkey=", ownerPubkey.toBase58());
+      return ownerPubkey;
+    }
+    return new PublicKey("");
+}
+  
+const getNFTTokenAccount = async (nftMintPk : PublicKey) : Promise<PublicKey> => {
+    console.log("getNFTTokenAccount nftMintPk=", nftMintPk.toBase58());
+    let tokenAccount = await solConnection.getProgramAccounts(
+      TOKEN_PROGRAM_ID,
+      {
+        filters: [
+          {
+            dataSize: 165
+          },
+          {
+            memcmp: {
+              offset: 64,
+              bytes: '2'
+            }
+          },
+          {
+            memcmp: {
+              offset: 0,
+              bytes: nftMintPk.toBase58()
+            }
+          },
+        ]
+      }
+    );
+    return tokenAccount[0].pubkey;
 }
 
 export const createAssociatedTokenAccountInstruction = (
