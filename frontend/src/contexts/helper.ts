@@ -22,7 +22,7 @@ import { GlobalPool, UserPool } from './types';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { IDL } from './staking_program';
 import { programs } from '@metaplex/js';
-import { successAlert, errorAlertCenter } from '../components/toastGroup';
+import { successAlert, infoAlert } from '../components/toastGroup';
 import { USER_POOL_SIZE, GLOBAL_AUTHORITY_SEED, REWARD_TOKEN_MINT, PROGRAM_ID, EPOCH } from '../config';
 
 export const solConnection = new web3.Connection(web3.clusterApiUrl("mainnet-beta"));
@@ -172,7 +172,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
                 tokenProgram: TOKEN_PROGRAM_ID,
             },
             instructions: [
-                ...instructions,
+                // ...instructions,
             ],
             signers: [],
         }
@@ -195,6 +195,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
         endLoading();
         updatePageStates();
         successAlert("Staking has been successful!");
+        infoAlert("Please try to stake another 3 seconds later.")
     } catch (error) {
         endLoading();
         console.log(error)
@@ -265,7 +266,6 @@ export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, s
     } catch (error) {
         endLoading();
         console.log(error)
-        errorAlertCenter("Solana Network Error! Please try again!")
     }
     endLoading();
 }
@@ -449,7 +449,6 @@ export const claimReward = async (wallet: WalletContextState, startLoading: Func
     } catch (error) {
         endLoading();
         console.log(error)
-        errorAlertCenter("Solana Network Error! Please try again!")
     }
     endLoading();
 };
