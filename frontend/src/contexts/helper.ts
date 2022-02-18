@@ -154,9 +154,13 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
         if (poolAccount === null || poolAccount.data === null) {
             await initUserPool(wallet);
             successAlert("Creating data account for user has been successful!\nTry staking again");
+            infoAlert("Wait for about 10 seconds to confirm!");
             endLoading();
             endDisable();
-            updatePageStates();
+            setTimeout(function() {
+                window.location.reload()
+            }, 5000);
+            // updatePageStates();
             return;
         }
         console.log(poolAccount, 'poolAccount====================>')
@@ -209,16 +213,23 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
         });
         console.log("staked status!+++++++++++++++")
         endLoading();
-        updatePageStates();
+        // updatePageStates();
+        // setTimeout(function() {
+        //     updatePageStates();
+        // }, 1000);
         successAlert("Staking has been successful!");
         infoAlert("Please try to stake another 3 seconds later.")
         endDisable();
+        setTimeout(function() {
+            window.location.reload()
+        }, 5000);
     } catch (error) {
         endLoading();
+        endDisable();
         console.log(error)
-        // errorAlertCenter("Solana Network Error! Please try again!")
     }
-    endLoading()
+    endLoading();
+    endDisable();
 }
 
 export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, startLoading: Function, endLoading: Function, updatePageStates: Function, startDisable: Function, endDisable: Function) => {
@@ -279,9 +290,16 @@ export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, s
         });
         console.log("unstaked status!+++++++++++++++++++")
         endLoading();
-        updatePageStates();
+        // updatePageStates();
+        // setTimeout(function() {
+        //     updatePageStates();
+        // }, 1000);
         successAlert("Untaking has been successful!");
+        infoAlert("Please try to unstake another 3 seconds later.");
         endDisable();
+        setTimeout(function() {
+            window.location.reload()
+        }, 5000);
     } catch (error) {
         endLoading();
         endDisable();
