@@ -226,7 +226,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
     } catch (error) {
         endLoading();
         endDisable();
-        console.log(error)
+        console.log(error);
     }
     endLoading();
     endDisable();

@@ -34,7 +34,8 @@ export default function Home() {
     const unstakedNftList = await getMetadataDetail();
     if (unstakedNftList !== undefined) {
       for (let item of unstakedNftList) {
-        if (item.data.creators[0]?.address === WWV_CREATOR) {
+        console.log(item, 'item--->item')
+        if (item.data.creators && item.data.creators[0]?.address === WWV_CREATOR) {
           await fetch(item.data.uri)
             .then(resp =>
               resp.json()
