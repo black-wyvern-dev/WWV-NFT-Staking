@@ -11,6 +11,8 @@ export default function NFTCard({
   isStaked,
   mint,
   updatePageStates,
+  disable,
+  setDisable,
   ...props
 }) {
   const ref = useRef();
@@ -25,6 +27,7 @@ export default function NFTCard({
       .then(resp =>resp.json())
       .then((json) => {
         const nfts = json.result.data.items;
+        // eslint-disable-next-line array-callback-return
         const results = nfts.filter(item => {
           if (item.id === number) return true
         }
@@ -42,11 +45,11 @@ export default function NFTCard({
   const onStakeNFT = async (mint) => {
     const rank = await getRank(mint);
     console.log(rank, 'rank')
-    stakeNft(wallet, new PublicKey(mint), rank, () => setLoading(true), () => setLoading(false), updatePageStates);
+    stakeNft(wallet, new PublicKey(mint), rank, () => setLoading(true), () => setLoading(false), updatePageStates, () => setDisable(true), () => setDisable(false));
   }
 
   const onUntakeNFT = (mint) => {
-    withdrawNft(wallet, new PublicKey(mint), () => setLoading(true), () => setLoading(false), updatePageStates);
+    withdrawNft(wallet, new PublicKey(mint), () => setLoading(true), () => setLoading(false), updatePageStates, () => setDisable(true), () => setDisable(false));
   }
 
   useEffect(() => {
@@ -69,11 +72,11 @@ export default function NFTCard({
             <div className="card-action">
               <p>{name}</p>
               {isStaked ?
-                <button className="action-button" onClick={() => onUntakeNFT(mint)}>
+                <button className="action-button" disabled={disable} onClick={() => onUntakeNFT(mint)}>
                   unstake
                 </button>
                 :
-                <button className="action-button" onClick={() => onStakeNFT(mint)}>
+                <button className="action-button" disabled={disable} onClick={() => onStakeNFT(mint)}>
                   stake
                 </button>
               }

@@ -13,6 +13,6 @@ export const REWARD_TOKEN_MINT = new PublicKey("CvzmN4HEMt2R9tsLyCV26yV2sT5tgD6n
 export const PROGRAM_ID = "F7cBo37zfFK5kLbTZxfejozgSiTb6J3EfgNWiu9HRPzD";
 
 export const EPOCH = 60 * 60 * 24 ;
-export const SHOW_REWARD_FIXED = 2;
+export const SHOW_REWARD_FIXED = 3;
 
 export const API_URL = "https://howrare.is/api/v0.1/collections/wildwestverse";

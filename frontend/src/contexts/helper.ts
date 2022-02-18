@@ -122,8 +122,9 @@ export const getUserPoolState = async (
     }
 }
 
-export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank: anchor.BN, startLoading: Function, endLoading: Function, updatePageStates: Function) => {
+export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank: anchor.BN, startLoading: Function, endLoading: Function, updatePageStates: Function, startDisable: Function, endDisable: Function) => {
     startLoading();
+    startDisable();
     let userAddress: PublicKey | null = wallet.publicKey;
     if (!userAddress) return
     let userTokenAccount = await getAssociatedTokenAccount(userAddress, mint);
@@ -150,14 +151,15 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
         );
         
         let poolAccount = await solConnection.getAccountInfo(userPoolKey);
+        if (poolAccount === null || poolAccount.data === null) {
+            await initUserPool(wallet);
+            successAlert("Creating data account for user has been successful!\nTry staking again");
+            endLoading();
+            endDisable();
+            updatePageStates();
+            return;
+        }
         console.log(poolAccount, 'poolAccount====================>')
-        // if (poolAccount === null || poolAccount.data === null) {
-        //     await initUserPool(wallet);
-        //     successAlert("Creating data account for user has been successful!\nTry staking again");
-        //     endLoading();
-        //     updatePageStates();
-        //     return;
-        // }
         let accountOfNFT = await getNFTTokenAccount(mint);
         
         console.log(userTokenAccount.toBase58(), accountOfNFT.toBase58(), '>>>>>>>>>>>----------<<<<<<<<<<<<<<<<');
@@ -210,6 +212,7 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
         updatePageStates();
         successAlert("Staking has been successful!");
         infoAlert("Please try to stake another 3 seconds later.")
+        endDisable();
     } catch (error) {
         endLoading();
         console.log(error)
@@ -218,12 +221,13 @@ export const stakeNft = async (wallet: WalletContextState, mint: PublicKey, rank
     endLoading()
 }
 
-export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, startLoading: Function, endLoading: Function, updatePageStates: Function) => {
+export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, startLoading: Function, endLoading: Function, updatePageStates: Function, startDisable: Function, endDisable: Function) => {
     let userAddress: PublicKey | null = wallet.publicKey;
     if (!userAddress) return;
     let userTokenAccount = await getAssociatedTokenAccount(userAddress, mint);
     // console.log("NFT = ", mint.toBase58(), userTokenAccount.toBase58());
     startLoading();
+    startDisable();
     try {
         let cloneWindow: any = window;
         let provider = new anchor.Provider(solConnection, cloneWindow['solana'], anchor.Provider.defaultOptions())
@@ -277,11 +281,14 @@ export const withdrawNft = async (wallet: WalletContextState, mint: PublicKey, s
         endLoading();
         updatePageStates();
         successAlert("Untaking has been successful!");
+        endDisable();
     } catch (error) {
         endLoading();
+        endDisable();
         console.log(error)
     }
     endLoading();
+    endDisable();
 }
 
 export const getATokenAccountsNeedCreate = async (

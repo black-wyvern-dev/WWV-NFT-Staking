@@ -2,7 +2,6 @@ import {
   WalletModalProvider,
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
-import logo from "../assets/img/logo.svg";
 import Container from "./Container";
 
 export default function Header() {

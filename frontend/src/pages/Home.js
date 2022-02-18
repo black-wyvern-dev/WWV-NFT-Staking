@@ -22,6 +22,7 @@ export default function Home() {
   const [stakedLoading, setStakedLoading] = useState(false)
   const [unstakedLoading, setUnStakedLoading] = useState(false)
   const [hide, setHide] = useState(false);
+  const [disable, setDisable] = useState(false);
 
   // ------------content state-----------
   const [userStakedNFTs, setUserStakedNFTs] = useState([]);
@@ -136,6 +137,8 @@ export default function Home() {
                         name={item.name}
                         mint={item.mint}
                         updatePageStates={updatePageStates}
+                        disable={disable}
+                        setDisable={setDisable}
                       />
                     ))}
                   </div>
@@ -169,6 +172,8 @@ export default function Home() {
                         name={item.name}
                         mint={item.mint}
                         updatePageStates={updatePageStates}
+                        disable={disable}
+                        setDisable={setDisable}
                       />
                     ))}
                   </div>

@@ -227,6 +227,14 @@ footer {
   opacity: 1;
   transition: opacity 0.4s;
 }
+.card-action:hover .action-button:disabled {
+  cursor: wait;
+  background: #8f867b;
+}
+.card-action:hover .action-button:disabled:hover {
+  cursor: wait;
+  background: #8f867b;
+}
 .card-action p {
   color: var(--main-bg-color);
   font-size: 30px;
