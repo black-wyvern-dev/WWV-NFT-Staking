@@ -564,6 +564,10 @@ export const calculateAvailableReward = async (userAddress: PublicKey) => {
         }
 
         let rwd = 0;
+        let triple = 1;
+        if (userPoolInfo.itemCount >= 10) {
+            triple = 3;
+        }
         const rank = userPoolInfo.stakedMints[i].rank;
         if (rank > 0 && rank <= 50) { rwd = 50;} 
         if (rank > 50 && rank < 200) { rwd = 40; } 
@@ -574,7 +578,7 @@ export const calculateAvailableReward = async (userAddress: PublicKey) => {
         if (rank >= 1500 && rank <= 2000) { rwd = 10; } 
         
         let reward = 0;
-        reward = (Math.floor((now - lastRewardTime) / EPOCH)) * rwd * 100000000;
+        reward = (Math.floor((now - lastRewardTime) / EPOCH)) * rwd *  triple * 100000000;
 
         totalReward += Math.floor(reward);
     }
