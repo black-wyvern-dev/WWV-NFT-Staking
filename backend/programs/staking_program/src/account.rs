@@ -62,6 +62,7 @@ impl UserPool {
         require!(self.owner.eq(&owner), StakingError::InvalidOwner);
         let mut withdrawn: u8 = 0;
         let mut reward: u64 = 0;
+        let count: u64 = self.item_count;
         for i in 0..self.item_count {
             let index = i as usize;
             if self.items[index].nft_addr.eq(&nft_mint) {
@@ -75,6 +76,8 @@ impl UserPool {
                 rank = self.items[index].rank;
 
                 let mut rwd: u64 = 0;
+                let mut triple: u64 = 1;
+                if count >= 10 triple =3;
 
                 //according to the user's rank
                 if rank > 0 && rank <= 50 { rwd = 50;}               
@@ -83,9 +86,9 @@ impl UserPool {
                 if rank >= 300 && rank < 600 { rwd = 25; }               
                 if rank >= 600 && rank < 1000 { rwd = 20; }               
                 if rank >= 1000 && rank < 1500 { rwd = 15; }              
-                if rank >= 1500 && rank < 2000 { rwd = 10; }              
+                if rank >= 1500 && rank <= 2000 { rwd = 10; }              
 
-                reward = (((now - last_reward_time) / DAY) as u64) * REWARD_PER_DAY * rwd;
+                reward = (((now - last_reward_time) / DAY) as u64) * REWARD_PER_DAY * rwd * triple;
                 // remove nft
                 if i != self.item_count - 1 {
                     let last_idx = self.item_count - 1;
@@ -101,6 +104,7 @@ impl UserPool {
     }
     pub fn claim_reward(&mut self, now: i64) -> Result<u64> {
         let mut total_reward: u64 = 0;
+        let count: u64= self.item_count; 
         for i in 0..self.item_count {
             let index = i as usize;
             //require!(self.items[index].stake_time + LIMIT_PERIOD <= now, StakingError::InvalidWithdrawTime);
@@ -112,6 +116,8 @@ impl UserPool {
             rank = self.items[index].rank;
 
             let mut rwd: u64 = 0;
+            let mut triple: u64 = 1;
+            if count >= 10 triple =3;
 
             //according to the user's rank
             if (rank > 0 && rank <= 50) { rwd = 50;}               
@@ -122,7 +128,7 @@ impl UserPool {
             if (rank >= 1000 && rank < 1500) { rwd = 15; }              
             if (rank >= 1500 && rank < 2000) { rwd = 10; }              
 
-            let reward = (((now - last_reward_time) / DAY) as u64) * REWARD_PER_DAY * rwd;
+            let reward = (((now - last_reward_time) / DAY) as u64) * REWARD_PER_DAY * rwd * triple;
             total_reward += reward;
         }
         total_reward += self.pending_reward;
